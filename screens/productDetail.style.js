@@ -5,7 +5,7 @@ import { COLORS,SIZES } from "../constants";
 const styles = StyleSheet.create({
     container:{
         flex:1,
-        backgroundColor:COLORS.lightWhite
+        backgroundColor:COLORS.lightWhite,
     },
     upperRow:{
         marginHorizontal:20,
@@ -18,9 +18,9 @@ const styles = StyleSheet.create({
         width:SIZES.width -44
     },
     image:{
-        aspectRatio:1,
+        // aspectRatio:1,
         width:"100%",
-        height:"50%",
+        height:350,
         resizeMode:"cover",
     },
     details:{
@@ -35,12 +35,14 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         justifyContent:"space-between",
         alignItems:"center",
-        width:SIZES.width -44, 
+        width:SIZES.width,
     },
     cartbtn:{
         width:SIZES.width * 0.7,
         backgroundColor:COLORS.black,
-        
+        padding:SIZES.small / 2,
+        borderRadius:SIZES.large,
+        marginLeft:12
     },
     titleRow:{
         marginHorizontal:20,
@@ -69,6 +71,12 @@ const styles = StyleSheet.create({
     title:{
         fontFamily:"bold",
         fontSize:SIZES.large,
+    },
+    cartTitle:{
+        marginLeft:SIZES.small,
+        fontFamily:"bold",
+        fontSize:SIZES.medium-2,
+        color:COLORS.lightWhite
     },
     pricewrapper:{
         backgroundColor:COLORS.secondary,
@@ -107,6 +115,15 @@ const styles = StyleSheet.create({
         padding:5,
         borderRadius:SIZES.large,
         marginHorizontal:12,
+    },
+    addCrt:{
+        width:37,
+        height:37,
+        borderRadius:50,
+        margin:SIZES.small,
+        backgroundColor:COLORS.black,
+        alignItems:'center',
+        justifyContent:"center",
     }
 })
 
