@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
-import { Text, View ,Image} from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Text, View ,Image,TouchableOpacity} from 'react-native'
 import styles from './productcardview.style';
 import im2 from '../../assets/images/fn5.jpg';
 import {Ionicons} from '@expo/vector-icons';
 import { COLORS } from '../../constants';
+import { useNavigation } from '@react-navigation/native';
 
 const ProductCardView = () => {
+  const navigation = useNavigation()
     return (
-      <TouchableOpacity onPress={() =>{}} style={{height:350}}>
+      <TouchableOpacity onPress={() => navigation.navigate("ProductDetail")} style={{height:350}}>
         <View style={styles.container}>
             <View style={styles.imageContainer}>
                 <Image source={im2} style={styles.image} />
