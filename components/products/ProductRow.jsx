@@ -7,8 +7,7 @@ import useFetch from "../../hook/usefetch";
 
 const ProductRow = () => {
   const { data, isLoading, error } = useFetch();
-  
-  const product = [1, 2, 3, 4];
+  // const product = [1, 2, 3, 4];
   return (
     <View style={styles.container}>
       {isLoading ? (
@@ -18,10 +17,11 @@ const ProductRow = () => {
       ) : (
         <FlatList
           data={data}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <ProductCardView />}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => <ProductCardView item={item} />}
           horizontal
           contentContainerStyle={{ columnGap: SIZES.medium }}
+          style={{ height: 350 }}
         />
       )}
     </View>

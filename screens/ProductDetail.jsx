@@ -8,10 +8,13 @@ import {
   Fontisto
 } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
-import im2 from "../assets/images/fn5.jpg";
+import { useRoute } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 
-const ProductDetail = ({ navigation }) => {
+const ProductDetail = ({ navigation}) => {
+  const route = useRoute();
+  const {item} = route.params;
+
   const [count, setCount] = useState(1);
 
   const increment = () => {
@@ -37,14 +40,14 @@ const ProductDetail = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       <ScrollView>
-        <Image source={im2} style={styles.image} />
+        <Image source={{uri:item.imageUrl}} style={styles.image} />
 
         <View style={styles.details}>
           <View style={styles.titleRow}>
-            <Text style={styles.title}>Product</Text>
+            <Text style={styles.title}>{item.title}</Text>
 
             <View style={styles.pricewrapper}>
-              <Text style={styles.price}>$ 660.88</Text>
+              <Text style={styles.price}>{item.price}</Text>
             </View>
           </View>
 
@@ -71,16 +74,7 @@ const ProductDetail = ({ navigation }) => {
           <View style={styles.descriptionWraper}>
             <Text style={styles.description}>Description</Text>
             <Text style={styles.descText}>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum
+             {item.description}
             </Text>
           </View>
 

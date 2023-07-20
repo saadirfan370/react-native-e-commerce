@@ -5,7 +5,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Cart, ProductDetail } from "./screens";
+import { Cart, ProductDetail,NewRivals } from "./screens";
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +46,11 @@ export default function App() {
           name="ProductDetail"
           component={ProductDetail} // Remove the JSX tags
           options={{ headerShown: false }}
+        />
+        <Stack.Screen 
+        name="ProductList"
+        component={NewRivals}
+        options={{headerShown: false}}
         />
       </Stack.Navigator>
     </NavigationContainer>

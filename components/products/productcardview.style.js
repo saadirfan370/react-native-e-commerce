@@ -4,15 +4,15 @@ import { COLORS, SIZES } from "../../constants";
 const styles = StyleSheet.create({
   container: {
     position:"relative",
-    width: 182,
-    height: 240,
+    width: 162,
+    height: 230,
     marginEnd: 5,
     borderRadius: SIZES.medium,
     backgroundColor: COLORS.secondary,
   },
   imageContainer: {
     flex: 1,
-    width: 170,
+    width: "92%",
     marginLeft: SIZES.small / 2,
     marginTop: SIZES.small / 2,
     borderRadius: SIZES.small,
