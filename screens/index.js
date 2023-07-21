@@ -4,6 +4,8 @@ import Search from "./Search";
 import Cart from "./Cart";
 import ProductDetail from "./ProductDetail";
 import NewRivals from './NewRivals'
+import Register from "./Register";
+import Login from './Login';
 
 export {
     Home,
@@ -11,5 +13,7 @@ export {
     Profile,
     Cart,
     ProductDetail,
-    NewRivals
+    NewRivals,
+    Register,
+    Login
 }
