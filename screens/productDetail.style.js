@@ -124,7 +124,13 @@ const styles = StyleSheet.create({
         backgroundColor:COLORS.black,
         alignItems:'center',
         justifyContent:"center",
-    }
+    },
+    loadingContainer:{
+        flex:1,
+        alignItems:"center",
+        justifyContent:"center",
+        alignContent:"center"
+    },
 })
 
 export default styles;

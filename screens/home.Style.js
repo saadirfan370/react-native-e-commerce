@@ -29,7 +29,8 @@ const styles = StyleSheet.create({
     alignItems:"center",
     backgroundColor:"green",
     justifyContent:"center",
-    zIndex:999
+    zIndex:999,
+    marginLeft:5
   },
   cutNum:{
     fontFamily:"regular",

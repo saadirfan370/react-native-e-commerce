@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, TouchableOpacity, Image } from "react-native";
+import { Text, View, TouchableOpacity, Image,ActivityIndicator } from "react-native";
 import styles from "./productDetail.style";
 import {
   Ionicons,
@@ -10,8 +10,14 @@ import {
 import { COLORS, SIZES } from "../constants";
 import { useRoute } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
+import { useDispatch,useSelector } from "react-redux";
+import { addTOCartAction } from "../redux/action/addTOCartAction";
+
 
 const ProductDetail = ({ navigation}) => {
+  const dispatch = useDispatch()
+  const {loading,data,error} = useSelector(state => state.addTOCart)
+
   const route = useRoute();
   const {item} = route.params;
 
@@ -28,8 +34,27 @@ const ProductDetail = ({ navigation}) => {
     }
   };
 
+  const addtocart = ( ) => {
+    dispatch(addTOCartAction({
+      title: item && item.title,
+      supplier: item && item.supplier,
+      price: item && item.price,
+      imageUrl: item && item.imageUrl,
+      description: item && item.description,
+      product_location: item && item.product_location,
+    }))
+  }
+  if(loading){
+    return(
+        <View style={styles.loadingContainer}>
+            <ActivityIndicator size={SIZES.xxLarge} color={COLORS.primary} />
+        </View>
+    )
+}
+
   return (
     <View style={styles.container}>
+      
       <View style={styles.upperRow}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="chevron-back-circle" size={30} />
@@ -96,7 +121,7 @@ const ProductDetail = ({ navigation}) => {
           </View>
 
           <View style={styles.cartRow}>
-            <TouchableOpacity onPress={() => {}} style={styles.cartbtn}>
+            <TouchableOpacity onPress={() => addtocart()} style={styles.cartbtn}>
               <Text style={styles.cartTitle}>BUY NOW</Text>
             </TouchableOpacity>
 

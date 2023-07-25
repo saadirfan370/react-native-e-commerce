@@ -1,63 +1,123 @@
-import React, { Component } from "react";
-import { Text, View, TouchableOpacity,ScrollView ,FlatList} from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  ActivityIndicator,
+  FlatList,
+} from "react-native";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
+import { CartList } from "../components";
+import { useDispatch,useSelector } from "react-redux";
+import { userProfileAction } from "../redux/action/userAction";
 
-const Cart = ({navigation}) => {
+const Cart = ({ navigation }) => {
+  const dispatch = useDispatch()
+  const {loading,user,error} = useSelector(state => state.profile)
+  // console.log(user,"profile",error);
+  const [count,setcount] = useState(0)
+
+
+  useEffect(()=>{
+    dispatch(userProfileAction())
+},[])
+
+
+const calculateTotalSum = () => {
+  if (user && user.orderHistory) {
+  const totalSum = user.orderHistory.reduce((sum, item) => {
+      const num = item.price;
+      const priceArray = num.split('$');
+      const numericValue = Number(priceArray[1]);
+      return sum + numericValue;
+    }, 0);
+    setcount(totalSum.toFixed(2))
+    console.log("Total sum:", count);
+  }
+};
+
+useEffect(() =>{
+  calculateTotalSum()
+},[user])
+
+if(loading){
+  return(
+      <View style={styles.loadingContainer}>
+          <ActivityIndicator size={SIZES.xxLarge} color={COLORS.primary} />
+      </View>
+  )
+}
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
         <View style={styles.upperRow}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Ionicons
-                name="chevron-back-circle"
-                size={30}
-                color={COLORS.black}
-              />
-            </TouchableOpacity>
-            <View style={{display:"flex",alignItems:"center",marginTop:5,marginLeft:10}}>
-              <Text
-                style={{
-                  fontFamily: "bold",
-                  fontSize: SIZES.xLarge,
-                }}
-              >
-                Cart
-              </Text>
-            </View>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Ionicons
+              name="chevron-back-circle"
+              size={30}
+              color={COLORS.black}
+            />
+          </TouchableOpacity>
+          <View
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginTop: 5,
+              marginLeft: 10,
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "bold",
+                fontSize: SIZES.large,
+                color:COLORS.primary
+              }}
+            >
+              Cart
+            </Text>
+          </View>
         </View>
       </View>
-
       <View style={styles.renderlist}>
-        <View style={styles.headingtop}>
-          <Text style={styles.heading}>Order Info</Text>
-          <View style={{padding:10}}>
-            <View style={styles.cash}>
-              <Text style={styles.textstyle}>
-                Subtotal
-              </Text>
-              <Text style={styles.textstyle}>
-                $799.00
-              </Text>
+      <FlatList 
+      data={user && user.orderHistory}
+      keyExtractor={(item) => item._id}
+      renderItem={({item}) => (<CartList item={item} />)}
+        ItemSeparatorComponent={() => <View style={styles.separator} />}
+      />
+      {/* <CartList /> */}
+        
+        <View >
+          <View style={styles.headingtop}>
+            <Text style={styles.heading}>Order Info</Text>
+            <View style={{ padding: 10 }}>
+              <View style={styles.cash}>
+                <Text style={styles.textstyle}>Subtotal</Text>
+                <Text style={styles.textstyle}>${count}</Text>
+              </View>
+              <View style={styles.cash}>
+                <Text style={styles.textstyle}>Total</Text>
+                <Text style={styles.textstyle1}>${count}</Text>
+              </View>
             </View>
-            <View style={styles.cash}>
-              <Text style={styles.textstyle}>
-                Total
+            <TouchableOpacity style={styles.checkoutbtn}>
+              <Text
+                style={{
+                  fontSize: SIZES.small,
+                  color: COLORS.lightWhite,
+                  fontFamily: "semibold",
+                }}
+              >
+                CHECKOUT ${count}
               </Text>
-              <Text style={styles.textstyle1}>
-                $799.00
-              </Text>
-            </View>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.checkoutbtn}>
-            <Text style={{fontSize:SIZES.small,color:COLORS.lightWhite,fontFamily:"semibold"}}>CHECKOUT $799.00</Text>
-          </TouchableOpacity>
         </View>
-          <ScrollView>
-            <FlatList />
-          </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -87,39 +147,52 @@ const styles = StyleSheet.create({
     top: SIZES.large,
     zIndex: 999,
   },
-  renderlist:{
-    marginTop:80
+  renderlist: {
+    marginTop: 55,
   },
-  headingtop:{
-    marginHorizontal:SIZES.medium
+  headingtop: {
+    marginHorizontal: SIZES.medium,
+    // position:"absolute",
+    // bottom:0,
+    // backgroundColor:COLORS.lightWhite,
+    // width:"90%"
   },
-  heading:{
-    fontFamily:"semibold",
-    fontSize:SIZES.medium,
-    color:COLORS.primary
+  heading: {
+    fontFamily: "semibold",
+    fontSize: SIZES.medium,
+    color: COLORS.primary,
   },
-  cash:{
-    flexDirection:"row",
-    justifyContent:"space-between",
-    marginTop:8,
-    borderBottomWidth:1
+  cash: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 8,
+    borderBottomWidth: 1,
   },
-  textstyle:{
-    fontFamily:"regular",
-    fontSize:SIZES.medium-3,
-    color:COLORS.gray
+  textstyle: {
+    fontFamily: "regular",
+    fontSize: SIZES.medium - 3,
+    color: COLORS.gray,
   },
-  textstyle1:{
-    fontFamily:"semibold",
-    fontSize:SIZES.medium,
-    color:COLORS.black,
+  textstyle1: {
+    fontFamily: "semibold",
+    fontSize: SIZES.medium,
+    color: COLORS.black,
   },
-  checkoutbtn:{
-    backgroundColor:COLORS.primary,
-    marginHorizontal:12,
-    borderRadius:12,
-    flexDirection:'row',
+  checkoutbtn: {
+    backgroundColor: COLORS.primary,
+    marginHorizontal: 12,
+    borderRadius: 12,
+    flexDirection: "row",
+    justifyContent: "center",
+    padding: 3,
+  },
+  loadingContainer:{
+    flex:1,
+    alignItems:"center",
     justifyContent:"center",
-    padding:3
-  }
+    alignContent:"center"
+},
+separator:{
+  height:1
+}
 });

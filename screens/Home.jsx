@@ -10,11 +10,13 @@ import Heading from "../components/home/Heading";
 import ProductRow from "../components/products/ProductRow";
 import { useNavigation } from "@react-navigation/native";
 
+
 const Home = () => {
   const navigation = useNavigation()
 
   return (
     <SafeAreaView>
+      
       <View style={styles.appBarWrapper}>
         <View style={styles.appBar}>
           <Ionicons name="location-outline" size={24} />
@@ -22,10 +24,10 @@ const Home = () => {
           <Text style={styles.location}>Shanghai China</Text>
 
           <View style={{ alignItems: "flex-end" }}>
+            <TouchableOpacity onPress={() => navigation.navigate("cart")}>
             <View style={styles.cartCount}>
               <Text style={styles.cutNum}> 8 </Text>
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate("cart")}>
               <Fontisto name="shopping-bag" size={24} />
             </TouchableOpacity>
           </View>

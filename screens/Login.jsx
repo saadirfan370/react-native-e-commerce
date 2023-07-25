@@ -8,32 +8,50 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform ,
-  ScrollView
+  ScrollView,
+  ActivityIndicator
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
 import img1 from "../assets/images/bk.png";
-
+import { useDispatch, useSelector } from "react-redux";
+import { userSignInAction } from "../redux/action/userAction";
 
 
 
 const Login = ({navigation}) => {
-  const [name, setName] = useState();
+  const {loading,userInfo,error} = useSelector(state => state.signIn)
+  const dispatch = useDispatch();
   const [email, setEmail] = useState();
   const [pass, setPass] = useState();
+
+  const handlesubmit = () => {
+    dispatch(userSignInAction({
+      email:email && email,
+      password: pass && pass
+  }))
+  }
+
+  if(loading){
+    return(
+        <View style={styles.loadingContainer}>
+            <ActivityIndicator size={SIZES.xxLarge} color={COLORS.primary} />
+        </View>
+    )
+}
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
         <View style={styles.upperRow}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          {/* <TouchableOpacity onPress={() => navigation.goBack()}>
             <Ionicons
               name="chevron-back-circle-outline"
               size={30}
               color={COLORS.black}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
       <KeyboardAvoidingView
@@ -68,7 +86,7 @@ const Login = ({navigation}) => {
               secureTextEntry={true}
             />
           </View>
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity style={styles.btn} onPress={()=> handlesubmit()} >
             <Text style={styles.btnText}>LOGIN</Text>
           </TouchableOpacity>
 
@@ -151,5 +169,11 @@ const styles = StyleSheet.create({
   btnText:{
     fontFamily:'medium',
     color:COLORS.lightWhite
-  }
+  },
+  loadingContainer:{
+    flex:1,
+    alignItems:"center",
+    justifyContent:"center",
+    alignContent:"center"
+},
 });

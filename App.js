@@ -5,7 +5,17 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Cart, ProductDetail,NewRivals, Register,Login } from "./screens";
+import {
+  Cart,
+  ProductDetail,
+  NewRivals,
+  Register,
+  Login,
+  Favorites,
+} from "./screens";
+import { Provider } from "react-redux";
+import store from "./redux/store";
+import UserRoute from "./components/userRoute";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,45 +40,56 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Bottom Navigation"
-          component={BottomTabNavigation} // Remove the JSX tags
-          options={{ headerShown: false }}
-        />
-         <Stack.Screen
-          name="Cart"
-          component={Cart} // Remove the JSX tags
-          options={{ headerShown: false }}
-        />
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator>
           <Stack.Screen
-          name="ProductDetail"
-          component={ProductDetail} // Remove the JSX tags
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen 
-        name="ProductList"
-        component={NewRivals}
-        options={{headerShown: false}}
-        />
-          <Stack.Screen 
-        name="Login"
-        component={Login}
-        options={{headerShown: false}}
-        />
-        <Stack.Screen 
-        name="Register"
-        component={Register}
-        options={{headerShown: false}}
-        />
-           <Stack.Screen 
-        name="cart"
-        component={Cart}
-        options={{headerShown: false}}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+            name="Bottom Navigation"
+            options={{ headerShown: false }}
+          >
+            {() => (
+              <UserRoute>
+                <BottomTabNavigation />
+              </UserRoute>
+            )}
+          </Stack.Screen>
+          <Stack.Screen
+            name="Cart"
+            component={Cart} // Remove the JSX tags
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ProductDetail"
+            component={ProductDetail} // Remove the JSX tags
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ProductList"
+            component={NewRivals}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Register"
+            component={Register}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="cart"
+            component={Cart}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Favorites"
+            component={Favorites}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
-
