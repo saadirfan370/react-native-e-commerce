@@ -22,9 +22,12 @@ import { userSignInAction } from "../redux/action/userAction";
 
 const Login = ({navigation}) => {
   const {loading,userInfo,error} = useSelector(state => state.signIn)
+
   const dispatch = useDispatch();
   const [email, setEmail] = useState();
   const [pass, setPass] = useState();
+
+
 
   const handlesubmit = () => {
     dispatch(userSignInAction({
@@ -32,6 +35,12 @@ const Login = ({navigation}) => {
       password: pass && pass
   }))
   }
+
+  useEffect(()=>{
+    if(userInfo){
+      navigation.navigate("BottomNavigation")
+    }
+  },[handlesubmit])
 
   if(loading){
     return(

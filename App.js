@@ -44,7 +44,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
-            name="Bottom Navigation"
+            name="BottomNavigation"
             options={{ headerShown: false }}
           >
             {() => (

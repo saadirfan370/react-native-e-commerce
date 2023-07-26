@@ -11,7 +11,7 @@ export const addTOCartAction = (order) => async (dispatch) => {
         headers: {
           "Content-Type": "application/json",
           cookies:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YmNlMzE1Nzk0ZWVlNTJiNzk4YTBiMSIsImlhdCI6MTY5MDEyNTQzNSwiZXhwIjoxNjkwMTI5MDM1fQ.0at2wIhfsq4Zord2J02IACwXyclaCEl9Ow0KONqiRag", // Include the token in the cookies
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YmNlMzE1Nzk0ZWVlNTJiNzk4YTBiMSIsImlhdCI6MTY5MDI3NTcwOSwiZXhwIjoxNjkwMjc5MzA5fQ.vujogAjm_Rhj8-mYm7lM28fz2PbvC3U7ERm2SmEmqL8", // Include the token in the cookies
         },
       }
     );

@@ -19,11 +19,14 @@ import {
   AntDesign,
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import { useSelector ,useDispatch} from "react-redux";
+import { ActionLogOut, userProfileAction, userSignInAction } from "../redux/action/userAction";
+import { useEffect } from "react";
 
 const Profile = () => {
-  const {loading,userInfo ,error} = useSelector(state => state.signIn)
-  console.log(userInfo);
+  const dispatch = useDispatch()
+  const {loading,user ,error} = useSelector(state => state.profile)
+  
   const navigation = useNavigation();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const onRefresh = () => {
@@ -32,6 +35,18 @@ const Profile = () => {
       setIsRefreshing(false);
     }, 2000); 
   };
+
+  useEffect(()=>{
+    dispatch(userProfileAction())
+  },[])
+
+
+  const logOutfun = () => {
+    dispatch(ActionLogOut())
+    dispatch(userSignInAction())
+    navigation.navigate("Login")
+  }
+
 
   return (
     <View style={styles.imgContainer}>
@@ -49,11 +64,11 @@ const Profile = () => {
             }}
           >
             {
-            userInfo ? userInfo._j.name : "example"
+            user ? user.name : "example"
             }
           </Text>
           <TouchableHighlight>
-            <Text style={styles.emailStyle}>{ userInfo ? userInfo._j.email : "example@gamil.com"}</Text>
+            <Text style={styles.emailStyle}>{ user ? user.email : "example@gamil.com"}</Text>
           </TouchableHighlight>
         </View>
         <View style={{ marginHorizontal: 10, paddingTop: 10 }}>
@@ -87,7 +102,7 @@ const Profile = () => {
               <AntDesign name="deleteuser" size={25} />
               <Text style={styles.text2}>Delete Account</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.btn4}>
+            <TouchableOpacity style={styles.btn4} onPress={()=> logOutfun()}>
               <AntDesign name="logout" size={25} />
               <Text style={styles.text2}>Logout</Text>
             </TouchableOpacity>

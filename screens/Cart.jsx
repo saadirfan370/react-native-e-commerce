@@ -12,45 +12,44 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
 import { CartList } from "../components";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userProfileAction } from "../redux/action/userAction";
 
 const Cart = ({ navigation }) => {
-  const dispatch = useDispatch()
-  const {loading,user,error} = useSelector(state => state.profile)
-  // console.log(user,"profile",error);
-  const [count,setcount] = useState(0)
+  const dispatch = useDispatch();
+  const { loading, user, error } = useSelector((state) => state.profile);
+  const [count, setcount] = useState(0);
 
+  useEffect(() => {
+    dispatch(userProfileAction());
+  }, []);
 
-  useEffect(()=>{
-    dispatch(userProfileAction())
-},[])
+  const calculateTotalSum = () => {
+    if (user && user.orderHistory) {
+      const totalSum = user.orderHistory.reduce((sum, item) => {
+        const num = item.price;
+        const priceArray = num.split("$");
+        const numericValue = Number(priceArray[1]);
+        console.log(sum);
+        return sum + numericValue;
+      }, 0);
+      setcount(totalSum.toFixed(2));
+      console.log(totalSum);
+      console.log("Total sum:", count);
+    }
+  };
 
+  useEffect(() => {
+    calculateTotalSum();
+  }, [user]);
 
-const calculateTotalSum = () => {
-  if (user && user.orderHistory) {
-  const totalSum = user.orderHistory.reduce((sum, item) => {
-      const num = item.price;
-      const priceArray = num.split('$');
-      const numericValue = Number(priceArray[1]);
-      return sum + numericValue;
-    }, 0);
-    setcount(totalSum.toFixed(2))
-    console.log("Total sum:", count);
-  }
-};
-
-useEffect(() =>{
-  calculateTotalSum()
-},[user])
-
-if(loading){
-  return(
+  if (loading) {
+    return (
       <View style={styles.loadingContainer}>
-          <ActivityIndicator size={SIZES.xxLarge} color={COLORS.primary} />
+        <ActivityIndicator size={SIZES.xxLarge} color={COLORS.primary} />
       </View>
-  )
-}
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -75,7 +74,7 @@ if(loading){
               style={{
                 fontFamily: "bold",
                 fontSize: SIZES.large,
-                color:COLORS.primary
+                color: COLORS.primary,
               }}
             >
               Cart
@@ -84,15 +83,18 @@ if(loading){
         </View>
       </View>
       <View style={styles.renderlist}>
-      <FlatList 
-      data={user && user.orderHistory}
-      keyExtractor={(item) => item._id}
-      renderItem={({item}) => (<CartList item={item} />)}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
-      />
-      {/* <CartList /> */}
-        
-        <View >
+        <View style={{height:"77%"}}>
+
+        <FlatList
+          data={user && user.orderHistory}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => <CartList item={item} />}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+        />
+        </View>
+        {/* <CartList /> */}
+
+        <View>
           <View style={styles.headingtop}>
             <Text style={styles.heading}>Order Info</Text>
             <View style={{ padding: 10 }}>
@@ -129,6 +131,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.lightWhite,
+    position: "relative",
   },
   wrapper: {
     flexDirection: "row",
@@ -152,6 +155,7 @@ const styles = StyleSheet.create({
   },
   headingtop: {
     marginHorizontal: SIZES.medium,
+    marginTop:10
     // position:"absolute",
     // bottom:0,
     // backgroundColor:COLORS.lightWhite,
@@ -186,13 +190,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 3,
   },
-  loadingContainer:{
-    flex:1,
-    alignItems:"center",
-    justifyContent:"center",
-    alignContent:"center"
-},
-separator:{
-  height:1
-}
+  loadingContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    alignContent: "center",
+  },
+  separator: {
+    height: 1,
+  },
 });

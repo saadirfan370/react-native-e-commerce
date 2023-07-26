@@ -67,3 +67,24 @@ export const userReducerProfile = (state = { user: null }, action) => {
   }
 
 }
+
+
+  //user profile
+  export const LogoutReducer = (state = {}, action) => {
+    switch (action.type) {
+        case 'USER_LOGOUT_REQUEST':
+            return { loading: true}
+        case 'USER_LOGOUT_SUCCESS':
+            return {
+                loading: false,
+                user: action.payload,
+            }
+        case 'USER_LOGOUT_FAIL':
+            return { loading: false, user: null, error: action.payload }
+        case 'USER_LOGOUT_RESET':
+            return {}
+        default:
+            return state;
+    }
+  
+  }

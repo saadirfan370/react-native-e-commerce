@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { productReducer } from './reducers/productReducer';
 import { addToCardReducer } from './reducers/addToCartReducer';
-import { useReducerSignIn, useReducerSignUP, userReducerProfile } from './reducers/userReducers';
+import { LogoutReducer, useReducerSignIn, useReducerSignUP, userReducerProfile } from './reducers/userReducers';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
@@ -13,13 +13,14 @@ const reducer = combineReducers({
     addTOCart:addToCardReducer,
     signIn:useReducerSignIn,
     signUP:useReducerSignUP,
-    profile:userReducerProfile
+    profile:userReducerProfile,
+    logout:LogoutReducer,
 })
 
 const getInitialUserInfo = async () => {
     try {
         const userInfoString = await AsyncStorage.getItem('userInfo');
-        return userInfoString ? JSON.parse(userInfoString) : null;
+        return userInfoString ? userInfoString : null;
     } catch (error) {
         console.log("Error fetching userInfo from AsyncStorage:", error);
         return null;
