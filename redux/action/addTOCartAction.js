@@ -1,8 +1,9 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 export const addTOCartAction = (order) => async (dispatch) => {
   dispatch({ type: "ADD_TO_CART_REQUEST" });
-//   const token = localStorage.getItem("userInfo")
+
   try {
     const { data } = await axios.post(
       "http://192.168.100.34:3000/api/order/orderHistory",
@@ -22,6 +23,33 @@ export const addTOCartAction = (order) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "ADD_TO_CART_FAIL",
+      payload: error.response.data.error,
+    });
+  }
+};
+
+
+export const delTOCartAction = (uuid) => async (dispatch) => {
+  dispatch({ type: "DELETE_TO_CART_REQUEST" });
+  const token =await AsyncStorage.getItem("userInfo")
+  console.log(token,'token2');
+  try {
+    const { data } = await axios.get(
+      `http://192.168.100.34:3000/api/order/orderHistorydel/${uuid}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          cookies: token
+        },
+      }
+    );
+    dispatch({
+      type: "DELETE_TO_CART_SUCCESS",
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: "DELETE_TO_CART_FAIL",
       payload: error.response.data.error,
     });
   }

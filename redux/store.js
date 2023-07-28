@@ -2,7 +2,7 @@ import { createStore,applyMiddleware,combineReducers } from 'redux'
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { productReducer } from './reducers/productReducer';
-import { addToCardReducer } from './reducers/addToCartReducer';
+import { DelToCardReducer, addToCardReducer } from './reducers/addToCartReducer';
 import { LogoutReducer, useReducerSignIn, useReducerSignUP, userReducerProfile } from './reducers/userReducers';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -15,6 +15,7 @@ const reducer = combineReducers({
     signUP:useReducerSignUP,
     profile:userReducerProfile,
     logout:LogoutReducer,
+    deleteCart:DelToCardReducer,
 })
 
 const getInitialUserInfo = async () => {

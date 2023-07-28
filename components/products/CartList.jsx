@@ -1,14 +1,25 @@
 import React, { Component } from "react";
-import { Text, Image, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, Image, View, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { COLORS, SIZES, SHADOWS } from "../../constants";
 import img from "../../assets/images/fn5.jpg";
 import { Ionicons } from "@expo/vector-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { delTOCartAction } from "../../redux/action/addTOCartAction";
+import { userProfileAction } from "../../redux/action/userAction";
 
-const CartList = ({ item }) => {
+const CartList = ({ item,fun }) => {
+  const dispatch = useDispatch();
+
   const navigation = useNavigation();
 
+  const DelCall = () =>{
+    dispatch(delTOCartAction(item._id))
+    fun()
+  }
   
+
+
   return (
     <View>
       <TouchableOpacity
@@ -35,9 +46,10 @@ const CartList = ({ item }) => {
             </Text>
             <TouchableOpacity>
               <Ionicons
-                name="trash-bin-outline"
+                name="trash-bin-outline" 
                 color="red"
                 size={SIZES.large}
+                onPress={()=> DelCall()}
               />
             </TouchableOpacity>
           </View>
@@ -104,5 +116,11 @@ const styles = StyleSheet.create({
     fontSize: SIZES.small + 2,
     fontFamily: "regular",
     color: COLORS.gray,
+  },
+  loadingContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    alignContent: "center",
   },
 });

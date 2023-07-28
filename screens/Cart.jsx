@@ -20,6 +20,14 @@ const Cart = ({ navigation }) => {
   const { loading, user, error } = useSelector((state) => state.profile);
   const [count, setcount] = useState(0);
 
+console.log( user && user.orderHistory.length);
+
+
+const fun = () => {
+  setTimeout(()=>dispatch(userProfileAction()),1000)
+
+}
+
   useEffect(() => {
     dispatch(userProfileAction());
   }, []);
@@ -30,12 +38,9 @@ const Cart = ({ navigation }) => {
         const num = item.price;
         const priceArray = num.split("$");
         const numericValue = Number(priceArray[1]);
-        console.log(sum);
         return sum + numericValue;
       }, 0);
       setcount(totalSum.toFixed(2));
-      console.log(totalSum);
-      console.log("Total sum:", count);
     }
   };
 
@@ -88,7 +93,7 @@ const Cart = ({ navigation }) => {
         <FlatList
           data={user && user.orderHistory}
           keyExtractor={(item) => item._id}
-          renderItem={({ item }) => <CartList item={item} />}
+          renderItem={({ item }) => <CartList item={item} fun={fun} />}
           ItemSeparatorComponent={() => <View style={styles.separator} />}
         />
         </View>

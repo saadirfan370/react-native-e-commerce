@@ -49,6 +49,7 @@ export const userSignInAction = (user) => async (dispatch) => {
   //user profile action
 export const userProfileAction = () => async (dispatch) => {
   dispatch({ type: 'USER_LOAD_REQUEST' });
+ 
   try {
       const { data } = await axios.get("http://192.168.100.34:3000/api/user/me", {
         headers: {
